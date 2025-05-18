@@ -5,7 +5,7 @@ import Signup from "./Signup";
 import "./auth.css";
 
 const AuthContainer = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
   
   // Fix for mobile viewport height issues
   useEffect(() => {

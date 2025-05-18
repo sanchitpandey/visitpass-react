@@ -219,25 +219,3 @@ button:active {
     min-width: 500px;
   }
 }
-
-@media (max-width: 768px) {
-  .visitor-card {
-    flex-direction: column;
-  }
-  .visitor-info {
-    order: 1;
-    width: 100%;
-    text-align: center;
-  }
-  .qr-code-container {
-    order: 2;
-    width: 100%;
-    margin-top: 20px;
-  }
-}
-
-/* make the QR svg shrink-to-fit */
-.qr-code {
-  max-width: 100%;
-  height: auto;
-}

@@ -376,7 +376,7 @@ button::-moz-focus-inner {
   /* Adjust form padding for mobile */
   .auth-form {
     padding: 20px 25px;
-    min-height: 460px;
+    min-height: 260px;
   }
 }
 
@@ -384,7 +384,7 @@ button::-moz-focus-inner {
 @media (max-width: 480px) {
   .auth-container {
     margin: 15px auto 80px auto;
-    min-height: 500px;
+    min-height: 200px;
   }
   
   .auth-form {
