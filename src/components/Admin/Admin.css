@@ -1,0 +1,236 @@
+/* AdminDashboard.css */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+/* Dashboard Container */
+.dashboard-container {
+  font-family: "Montserrat", sans-serif;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Admin Home */
+.admin-home {
+  width: 100%;
+}
+
+.admin-home h2 {
+  color: #ff416c;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* Action Cards */
+.action-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  transition: transform 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+}
+
+.action-card h3 {
+  color: #ff4b2b;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.action-card p {
+  margin-bottom: 20px;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Form Elements */
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-group input[type="date"] {
+  padding: 12px 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+}
+
+.form-group input[type="date"]:focus {
+  outline: none;
+  border-color: #ff4b2b;
+  box-shadow: 0 0 5px rgba(255, 75, 43, 0.3);
+}
+
+/* Buttons */
+.generate-btn, 
+.register-staff-btn,
+.download-btn {
+  border-radius: 20px;
+  border: 1px solid #ff4b2b;
+  background-color: #ff4b2b;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: center;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.generate-btn:hover, 
+.register-staff-btn:hover,
+.download-btn:hover {
+  background-color: #ff3c1f;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.generate-btn:active, 
+.register-staff-btn:active,
+.download-btn:active {
+  transform: scale(0.95);
+}
+
+.generate-btn:disabled {
+  background-color: #cccccc;
+  border-color: #bbbbbb;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Download Link */
+.download-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.download-btn {
+  display: inline-block;
+  text-decoration: none;
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+}
+
+/* Error Message */
+.error-message {
+  background-color: #ffdddd;
+  color: #ff0000;
+  padding: 12px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Staff Form */
+.staff-form {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.staff-form h3 {
+  color: #ff4b2b;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.cancel-btn {
+  border-radius: 20px;
+  border: 1px solid #6c757d;
+  background-color: #6c757d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 30px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .admin-actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-card {
+    padding: 20px;
+  }
+  
+  .generate-btn, 
+  .register-staff-btn,
+  .download-btn {
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .cancel-btn,
+  .form-actions button {
+    width: 100%;
+  }
+}

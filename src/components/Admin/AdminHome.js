@@ -1,6 +1,7 @@
 // src/components/Admin/AdminHome.js
 import React, { useState } from "react";
 import api from "../../services/api";
+import './Admin.css';
 
 const AdminHome = ({ onRegisterStaff }) => {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);

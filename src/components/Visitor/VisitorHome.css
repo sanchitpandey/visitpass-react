@@ -1,0 +1,243 @@
+/* VisitorHome.css */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+.visitor-home {
+  font-family: "Montserrat", sans-serif;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  color: #333;
+}
+
+.visitor-home h2 {
+  color: #ff416c;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Card styling */
+.visitor-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visitor-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 300px;
+  margin-bottom: 20px;
+}
+
+.visitor-photo {
+  margin-right: 30px;
+}
+
+.visitor-details {
+  flex: 1;
+}
+
+.visitor-details h3 {
+  color: #ff4b2b;
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.visitor-details p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* QR Code styling */
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  min-width: 240px;
+}
+
+.qr-code-container h4 {
+  color: #ff4b2b;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.qr-code {
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-instructions {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Status indicators */
+.status-Approved {
+  color: #2ecc71;
+  font-weight: 700;
+}
+
+.status-Pending {
+  color: #f39c12;
+  font-weight: 700;
+}
+
+.status-Rejected {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+/* Visit History table */
+.visit-history {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+}
+
+.visit-history h3 {
+  color: #ff416c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.visit-history table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.visit-history th {
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.visit-history td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.visit-history tr:last-child td {
+  border-bottom: none;
+}
+
+.visit-history tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Loading and error states */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #ff4b2b;
+}
+
+.error-message {
+  background-color: #ffdddd;
+  color: #ff0000;
+  padding: 12px;
+  border-radius: 5px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Button styling to match auth buttons */
+button {
+  border-radius: 20px;
+  border: 1px solid #ff4b2b;
+  background-color: #ff4b2b;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff3c1f !important;
+  color: white !important;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .visitor-card {
+    flex-direction: column;
+  }
+  
+  .visitor-info {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .visitor-photo {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .qr-code-container {
+    width: 100%;
+  }
+  
+  .visit-history {
+    overflow-x: auto;
+  }
+  
+  .visit-history table {
+    min-width: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .visitor-card {
+    flex-direction: column;
+  }
+  .visitor-info {
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+  .qr-code-container {
+    order: 2;
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+/* make the QR svg shrink-to-fit */
+.qr-code {
+  max-width: 100%;
+  height: auto;
+}

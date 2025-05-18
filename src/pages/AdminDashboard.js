@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import Header from "../components/common/Header";
 import AdminHome from "../components/Admin/AdminHome";
 import StaffForm from "../components/Admin/StaffForm";
+import hospitalLogo from "../assets/IIA_transparent.png";
 
 const AdminDashboard = () => {
   const { currentUser, logout } = useAuth();
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
         userName={currentUser.name}
         role={currentUser.role}
         onLogout={logout}
+        logoSrc={hospitalLogo}
       />
 
       <main className="dashboard-content">

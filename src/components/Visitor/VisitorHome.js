@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { QRCodeSVG } from "qrcode.react";
+import "./VisitorHome.css";
 
 const VisitorHome = () => {
   const { currentUser } = useAuth();

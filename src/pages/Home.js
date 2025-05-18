@@ -1,30 +1,25 @@
 // src/pages/Home.js
-import React, { useState } from "react";
-import Login from "../components/Auth/Login";
-import Signup from "../components/Auth/Signup";
+import React from "react";
+import AuthContainer from "../components/Auth/AuthContainer";
+import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Home = () => {
-  const [showLogin, setShowLogin] = useState(true);
+  const { currentUser } = useAuth();
 
-  const toggleForm = () => {
-    setShowLogin(!showLogin);
-  };
+  // Redirect authenticated users based on their role
+  if (currentUser) {
+    if (currentUser.role === "visitor") {
+      return <Navigate to="/visitor" replace />;
+    } else if (currentUser.role === "security") {
+      return <Navigate to="/security" replace />;
+    } else if (currentUser.role === "admin") {
+      return <Navigate to="/admin" replace />;
+    }
+  }
 
-  return (
-    <div className="home-container">
-      <div className="auth-container">
-        <div className="auth-header">
-          <h1>Hospital Visitor Management System</h1>
-        </div>
-
-        {showLogin ? (
-          <Login toggleForm={toggleForm} />
-        ) : (
-          <Signup toggleForm={toggleForm} />
-        )}
-      </div>
-    </div>
-  );
+  return <AuthContainer />;
 };
 
 export default Home;
+

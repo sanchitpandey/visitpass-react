@@ -1,0 +1,420 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+/* Fix for body and html to ensure proper height calculation */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Home container with proper positioning context */
+.home-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Container for the entire authentication component - WIDER for PC */
+.auth-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 900px;
+  max-width: 95%;
+  min-height: 480px;
+  margin: 50px auto;
+}
+
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+  height: 100%;
+}
+
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+}
+
+@keyframes show {
+  0%, 49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%, 100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: #ff416c;
+  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #ffffff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+h1 {
+  font-weight: bold;
+  margin: 0;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+}
+
+/* Updated auth-form for better scrollable content */
+.auth-form {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 30px 50px;
+  height: auto;
+  min-height: 100%;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-form input {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.auth-form button {
+  border-radius: 20px;
+  border: 1px solid #ff4b2b;
+  background-color: #ff4b2b;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.auth-form button:active {
+  transform: scale(0.95);
+}
+
+.auth-form button:focus {
+  outline: none;
+}
+
+button.ghost {
+  background-color: transparent;
+  border-color: #ffffff;
+}
+
+/* Default state is hidden for desktop */
+.mobile-switch {
+  display: none;
+}
+
+/* Remove bluish hover effect on buttons */
+button:hover, 
+button:focus {
+  background-color: #ff3c1f !important;
+  color: white !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button.ghost:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Remove default focus outline */
+button::-moz-focus-inner {
+  border: 0;
+}
+
+/* Improved error message display */
+.error-message {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  border-radius: 5px;
+  background-color: #ffdddd;
+  color: #ff0000;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Improved selfie upload and preview styles */
+.selfie-container {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.selfie-upload {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 10px auto;
+  border: 3px solid var(--input-bg, #eee);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--input-bg, #eee);
+}
+
+.selfie-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.upload-button {
+  width: 100%;
+  max-width: 250px;
+  margin: 10px 0;
+  border-radius: 20px !important;
+}
+
+/* Ensure form scrolls properly with image */
+.auth-form {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.auth-form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.auth-form::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.auth-form::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+/* Enhanced Mobile responsiveness - CORRECTED */
+@media (max-width: 768px) {
+  .auth-container {
+    min-height: 500px;
+    width: 90%;
+    margin: 20px auto 80px auto; /* Added bottom margin for switch button */
+  }
+  
+  .form-container {
+    position: relative;
+    height: auto;
+    width: 100%;
+    transition: none;
+  }
+  
+  .sign-in-container {
+    display: block;
+    opacity: 1;
+    z-index: 2;
+    transform: none !important;
+    width: 100%;
+  }
+  
+  .sign-up-container {
+    display: none;
+    opacity: 0;
+    z-index: 1;
+    width: 100%;
+    transform: none !important;
+  }
+  
+  .container.right-panel-active .sign-in-container {
+    display: none;
+  }
+  
+  .container.right-panel-active .sign-up-container {
+    display: block;
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  /* Hide overlay in mobile */
+  .overlay-container {
+    display: none;
+  }
+  
+  .mobile-switch {
+    display: block !important; /* Ensure it's shown */
+    position: relative; /* Fixed position at the bottom */
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    width: 90%; /* Width of the button */
+    max-width: 300px;
+    margin: 0 auto; /* Center horizontally */
+    z-index: 1000; /* Ensure it's above other content */
+  }
+  
+  .mobile-switch button {
+    background-color: #ff4b2b;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Adjust form padding for mobile */
+  .auth-form {
+    padding: 20px 25px;
+    min-height: 460px;
+  }
+}
+
+/* Smaller screens (phone portrait) */
+@media (max-width: 480px) {
+  .auth-container {
+    margin: 15px auto 80px auto;
+    min-height: 500px;
+  }
+  
+  .auth-form {
+    padding: 15px;
+  }
+  
+  .auth-form input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .preview-container {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Fix for iOS height calculation */
+@supports (-webkit-touch-callout: none) {
+  .auth-container, 
+  .sign-in-container, 
+  .sign-up-container {
+    height: -webkit-fill-available;
+  }
+  
+  body, html {
+    height: -webkit-fill-available;
+  }
+}
