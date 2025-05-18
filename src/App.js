@@ -11,9 +11,7 @@ import Home from "./pages/Home";
 import VisitorDashboard from "./pages/VisitorDashboard";
 import SecurityDashboard from "./pages/SecurityDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import { isAdmin, isSecurity, isVisitor } from "./utils/roles";
 import "./App.css";
-import VisitorHome from "./components/Visitor/VisitorHome";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles }) => {

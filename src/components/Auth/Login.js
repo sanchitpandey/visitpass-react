@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
-const Login = ({ toggleForm }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,45 +30,31 @@ const Login = ({ toggleForm }) => {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Login</h2>
+    <form className="auth-form" onSubmit={handleSubmit}>
+      <h1>Sign in</h1>
+      
       {error && <div className="error-message">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-
-      <p>
-        Don't have an account?{" "}
-        <button className="text-button" onClick={toggleForm}>
-          Sign up as a visitor
-        </button>
-      </p>
-    </div>
+      
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Signing in..." : "Sign In"}
+      </button>
+    </form>
   );
 };
 

@@ -102,7 +102,6 @@ const SecurityHome = () => {
 
   return (
     <div className="security-home">
-      <h2>Visitor QR Scanner</h2>
 
       {error && <div className="error-message">{error}</div>}
 

@@ -1,0 +1,140 @@
+/* Header.css */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: "Montserrat", sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+  transform: scale(1.02);
+}
+
+.hospital-logo {
+  height: 40px;
+  width: auto;
+  margin-right: 15px;
+}
+
+.header-logo h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.user-role {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.logout-btn {
+  border-radius: 20px;
+  border: 2px solid #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 8px 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+}
+
+.logout-btn:hover {
+  background-color: #ffffff;
+  color: #ff4b2b;
+  transform: translateY(-2px);
+}
+
+.logout-btn:active {
+  transform: scale(0.95);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.6rem 1rem;
+  }
+  
+  /* Hide header text on mobile */
+  .header-logo h1 {
+    display: none;
+  }
+  
+  .hospital-logo {
+    height: 30px;
+    margin-right: 0; /* Remove margin since text is hidden */
+  }
+  
+  .user-info {
+    gap: 8px;
+  }
+  
+  .user-name {
+    font-size: 0.8rem;
+  }
+  
+  .user-role {
+    font-size: 0.75rem;
+  }
+  
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    flex-direction: column;
+    padding: 0.6rem;
+    gap: 10px;
+  }
+  
+  .header-logo {
+    margin-bottom: 5px;
+  }
+  
+  /* Ensure logo is properly centered when title is hidden */
+  .header-logo {
+    justify-content: center;
+  }
+  
+  .user-info {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+}

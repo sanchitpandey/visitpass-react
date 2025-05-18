@@ -2,8 +2,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../utils/roles";
+import "./Header.css"; // Import the CSS file
 
-const Header = ({ userName, role, onLogout }) => {
+const Header = ({ userName, role, onLogout, logoSrc }) => {
   const navigate = useNavigate();
 
   const navigateToDashboard = () => {
@@ -25,6 +26,13 @@ const Header = ({ userName, role, onLogout }) => {
   return (
     <header className="app-header">
       <div className="header-logo" onClick={navigateToDashboard}>
+        {logoSrc && (
+          <img 
+            src={logoSrc} 
+            alt="Hospital Logo" 
+            className="hospital-logo" 
+          />
+        )}
         <h1>Hospital Visitor Management</h1>
       </div>
 
@@ -37,6 +45,11 @@ const Header = ({ userName, role, onLogout }) => {
       </div>
     </header>
   );
+};
+
+// Set default props
+Header.defaultProps = {
+  logoSrc: "" // Default empty, but can be passed a logo path
 };
 
 export default Header;

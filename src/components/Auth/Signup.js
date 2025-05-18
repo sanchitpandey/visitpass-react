@@ -29,6 +29,12 @@ const Signup = ({ toggleForm }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Check if file size is too large (over 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError("File is too large. Please select an image under 5MB.");
+        return;
+      }
+      
       setSelfie(file);
       const reader = new FileReader();
       reader.onloadend = () => setPreviewUrl(reader.result);
@@ -54,27 +60,11 @@ const Signup = ({ toggleForm }) => {
       return;
     }
 
-    if (!/^\d{12}$/.test(formData.aadhaarNumber)) {
-      setError("Aadhaar must be 12 digits");
-      setIsLoading(false);
-      return;
-    }
-
-    if (!/^\d{10}$/.test(formData.phoneNumber)) {
-      setError("Phone number must be 10 digits");
-      setIsLoading(false);
-      return;
-    }
-
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("phoneNumber", formData.phoneNumber);
-      formDataToSend.append("aadhaarNumber", formData.aadhaarNumber);
-      formDataToSend.append("address", formData.address);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
-      formDataToSend.append("purpose", formData.purpose);
+      Object.keys(formData).forEach(key => {
+        formDataToSend.append(key, formData[key]);
+      });
       formDataToSend.append("selfie", selfie);
 
       const result = await signup(formDataToSend);
@@ -94,138 +84,123 @@ const Signup = ({ toggleForm }) => {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Visitor Registration</h2>
+    <form className="auth-form" onSubmit={handleSubmit}>
+      <h1>Create Account</h1>
+      
       {error && <div className="error-message">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Full Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+      
+      <input
+        type="text"
+        name="name"
+        placeholder="Full Name"
+        value={formData.name}
+        onChange={handleChange}
+        required
+      />
+      
+      <input
+        type="tel"
+        name="phoneNumber"
+        placeholder="Phone Number"
+        value={formData.phoneNumber}
+        onChange={handleChange}
+        maxLength="10"
+        required
+      />
+      
+      <input
+        type="text"
+        name="aadhaarNumber"
+        placeholder="Aadhaar Number"
+        value={formData.aadhaarNumber}
+        onChange={handleChange}
+        maxLength="12"
+        required
+      />
+      
+      <input
+        type="text"
+        name="address"
+        placeholder="Address"
+        value={formData.address}
+        onChange={handleChange}
+        required
+      />
+      
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+      />
+      
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleChange}
+        minLength="6"
+        required
+      />
+      
+      <input
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+      />
+      
+      <input
+        type="text"
+        name="purpose"
+        placeholder="Visit Purpose"
+        value={formData.purpose}
+        onChange={handleChange}
+        required
+      />
+      
+      <div className="selfie-container">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          ref={fileInputRef}
+          style={{ display: "none" }}
+        />
+        
+        <div className="selfie-upload">
+          {previewUrl && (
+            <div className="preview-container">
+              <img 
+                src={previewUrl} 
+                alt="Selfie preview" 
+                className="selfie-preview"
+              />
+            </div>
+          )}
+          
+          <button
+            type="button"
+            onClick={triggerFileInput}
+            className="upload-button"
+            style={{ 
+              backgroundColor: previewUrl ? "#2ecc71" : "#ff4b2b"
+            }}
+          >
+            {previewUrl ? "Change Photo" : "Upload Selfie"}
+          </button>
         </div>
-
-        <div className="form-group">
-          <label>Phone Number</label>
-          <input
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            maxLength="10"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Aadhaar Number</label>
-          <input
-            type="text"
-            name="aadhaarNumber"
-            value={formData.aadhaarNumber}
-            onChange={handleChange}
-            maxLength="12"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Address</label>
-          <textarea
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            minLength="6"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Visit Purpose</label>
-          <input
-            type="text"
-            name="purpose"
-            value={formData.purpose}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Upload Selfie</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            ref={fileInputRef}
-            style={{ display: "none" }}
-          />
-          <div className="selfie-upload">
-            {previewUrl ? (
-              <img src={previewUrl} alt="Selfie preview" className="preview" />
-            ) : (
-              <div className="placeholder">No image selected</div>
-            )}
-            <button
-              type="button"
-              onClick={triggerFileInput}
-              className="upload-btn"
-            >
-              {previewUrl ? "Change Photo" : "Upload Selfie"}
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Registering..." : "Create Account"}
-        </button>
-      </form>
-
-      <p>
-        Already have an account?{" "}
-        <button type="button" className="text-button" onClick={toggleForm}>
-          Login instead
-        </button>
-      </p>
-    </div>
+      </div>
+      
+      <button type="submit" disabled={isLoading} className="submit-button">
+        {isLoading ? "Creating Account..." : "Sign Up"}
+      </button>
+    </form>
   );
 };
 
