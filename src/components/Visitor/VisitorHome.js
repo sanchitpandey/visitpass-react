@@ -1,4 +1,5 @@
 // src/components/Visitor/VisitorHome.js
+// src/components/Visitor/VisitorHome.js
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
@@ -55,9 +56,10 @@ const VisitorHome = () => {
     <div className="visitor-home">
       <h2>Welcome, {currentUser?.name}</h2>
 
-      <div className="visitor-card">
+      {/* Desktop View - Row Layout */}
+      <div className="visitor-card desktop-view">
         <div className="visitor-info">
-        <div className="visitor-photo">
+          <div className="visitor-photo">
             {visitor?.selfieUrl ? (
               <>
                 <img 
@@ -110,6 +112,77 @@ const VisitorHome = () => {
         </div>
 
         <div className="qr-code-container">
+          <h4>Visitor QR Code</h4>
+          {visitor?.qrCode && (
+            <QRCodeSVG 
+              value={visitor.qrCode} 
+              size={200}
+              level="H"
+              className="qr-code"
+            />
+          )}
+          <p className="qr-instructions">
+            Present this QR code at entry/exit points
+          </p>
+        </div>
+      </div>
+
+      {/* Mobile View - Column Layout */}
+      <div className="visitor-card-mobile mobile-view">
+        <div className="visitor-info-mobile">
+          <div className="visitor-photo">
+            {visitor?.selfieUrl ? (
+              <>
+                <img 
+                  src={getImageUrl(visitor.selfieUrl)}
+                  alt="Visitor" 
+                  style={{ 
+                    width: "150px", 
+                    height: "150px", 
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    border: "2px solid #ccc"
+                  }} 
+                  onError={(e) => {
+                    console.log("Image failed to load:", e.target.src);
+                    e.target.onerror = null;
+                    e.target.src = 'https://placehold.co/400?text=No+Image';
+                  }}
+                />
+              </>
+            ) : (
+              <div className="no-photo" style={{
+                width: "150px",
+                height: "150px",
+                borderRadius: "50%",
+                backgroundColor: "#f0f0f0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "2px solid #ccc"
+              }}>
+                No photo available
+              </div>
+            )}
+          </div>
+
+          <div className="visitor-details">
+            <h3>{visitor?.name}</h3>
+            <p>
+              <strong>Aadhaar:</strong> {visitor?.aadhaarNumber}
+            </p>
+            <p>
+              <strong>Status:</strong>{" "}
+              <span
+                className={`status-${visitor?.status?.replace(/\s+/g, "-")}`}
+              >
+                {visitor?.status}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div className="qr-code-container-mobile">
           <h4>Visitor QR Code</h4>
           {visitor?.qrCode && (
             <QRCodeSVG 
