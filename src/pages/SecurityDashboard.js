@@ -14,7 +14,6 @@ const SecurityDashboard = () => {
         userName={currentUser.name}
         role={currentUser.role}
         onLogout={logout}
-        logoSrc={hospitalLogo}
       />
 
       <main className="dashboard-content">
