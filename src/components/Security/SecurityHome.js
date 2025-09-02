@@ -9,9 +9,9 @@ const SecurityHome = () => {
   const [loading, setLoading] = useState(false);
   const [pause, setPause] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [key, setKey] = useState(0); // Add a key state to force re-render
+  const [key, setKey] = useState(0); 
 
-  // Reset scanner state after timeout
+  
   useEffect(() => {
     let timer;
     if (showSuccess) {
@@ -21,7 +21,7 @@ const SecurityHome = () => {
         setVisitorData(null);
         setError("");
         setPause(false);
-        setKey(prevKey => prevKey + 1); // Force scanner component to remount
+        setKey(prevKey => prevKey + 1); 
       }, 2000);
     }
     
@@ -38,10 +38,10 @@ const SecurityHome = () => {
       setPause(true);
       
       try {
-        // Extract the rawValue from the scan result
+        
         let qrCodeData;
         
-        // Handle different result formats
+        
         if (Array.isArray(result) && result.length > 0) {
           qrCodeData = result[0]?.rawValue || "";
         } else if (result.rawValue) {
@@ -54,7 +54,7 @@ const SecurityHome = () => {
         
         console.log("Sending QR data to API:", qrCodeData);
         
-        // Try entry first
+        
         try {
           const response = await api.post("/access/entry", {
             qrCodeData: qrCodeData,
@@ -64,7 +64,7 @@ const SecurityHome = () => {
           setVisitorData(response.data.data);
           setShowSuccess(true);
         } catch (entryError) {
-          // If visitor is already inside, try exit instead
+          
           if (
             entryError.response &&
             entryError.response.status === 400 &&
@@ -79,7 +79,7 @@ const SecurityHome = () => {
             setVisitorData(exitResponse.data.data);
             setShowSuccess(true);
           } else {
-            // If it's any other error, throw it to be caught by the outer catch
+            
             throw entryError;
           }
         }
@@ -87,7 +87,7 @@ const SecurityHome = () => {
       } catch (err) {
         console.error("API error:", err);
         setError(err.response?.data?.message || "Server error occurred");
-        // Reset scanner state even on error
+        
         setTimeout(() => {
           setError("");
           setPause(false);
@@ -111,7 +111,7 @@ const SecurityHome = () => {
         margin: "0 auto"
       }}>
         <Scanner 
-          key={key} // Force re-render of scanner when key changes
+          key={key} 
           onScan={handleScan}
           onError={(err) => {
             console.error("Scanner error:", err);
