@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import Header from "../components/common/Header";
 import AdminHome from "../components/Admin/AdminHome";
 import StaffForm from "../components/Admin/StaffForm";
-import hospitalLogo from "../assets/IIA_transparent.png";
 
 const AdminDashboard = () => {
   const { currentUser, logout } = useAuth();

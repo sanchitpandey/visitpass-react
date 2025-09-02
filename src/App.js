@@ -1,10 +1,12 @@
 // src/App.js
-import React from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useNavigate,
+  useLocation,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Home from "./pages/Home";
@@ -15,17 +17,31 @@ import "./App.css";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { currentUser, loading } = useAuth();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // This hook will run when the user logs in/out, or on initial load.
+    if (!loading && user) {
+      // If we are done loading and we have a user...
+      // and we are currently on the home/auth page...
+      if (location.pathname === "/") {
+        // ...then redirect to their correct dashboard.
+        navigate(`/${user.role}`);
+      }
+    }
+  }, [user, loading, navigate, location]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!currentUser) {
+  if (!user) { 
     return <Navigate to="/" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(currentUser.role)) {
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 

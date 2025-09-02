@@ -1,18 +1,16 @@
 // src/pages/VisitorDashboard.js
-import React from "react";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/common/Header";
 import VisitorHome from "../components/Visitor/VisitorHome";
-import hospitalLogo from "../assets/IIA_transparent.png";
 
 const VisitorDashboard = () => {
-  const { currentUser, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className="dashboard-container">
       <Header
-        userName={currentUser?.name}
-        role={currentUser?.role}
+        userName={user?.name}
+        role={user?.role}
         onLogout={logout}
       />
 

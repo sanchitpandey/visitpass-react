@@ -9,7 +9,7 @@ const AdminHome = ({ onRegisterStaff }) => {
   const [error, setError] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
 
-  const handleDateChange = (e) => {
+  const handleDateChange = (e) => {     
     setDate(e.target.value);
   };
 

@@ -7,23 +7,19 @@ import "./auth.css";
 const AuthContainer = () => {
   const [isSignUp, setIsSignUp] = useState(true);
   
-  // Fix for mobile viewport height issues
   useEffect(() => {
     const setMobileHeight = () => {
-      // Set a CSS variable with the viewport height
+      
       document.documentElement.style.setProperty(
         '--vh', 
         `${window.innerHeight * 0.01}px`
       );
     };
     
-    // Initial call
     setMobileHeight();
     
-    // Set up event listener for resize
     window.addEventListener('resize', setMobileHeight);
     
-    // Clean up
     return () => window.removeEventListener('resize', setMobileHeight);
   }, []);
 
@@ -35,10 +31,21 @@ const AuthContainer = () => {
     <div className="home-container">
       <div className={`auth-container container ${isSignUp ? 'right-panel-active' : ''}`} id="container">
         <div className="form-container sign-in-container">
-          <Login toggleForm={toggleForm} />
+          { !isSignUp && (
+            <>
+              <h2 className="form-title">Login</h2>
+              <Login toggleForm={toggleForm} />
+            </>
+          )}
         </div>
+
         <div className="form-container sign-up-container">
-          <Signup toggleForm={toggleForm} />
+          { isSignUp && (
+            <>
+              <h2 className="form-title">Sign Up</h2>
+              <Signup toggleForm={toggleForm} />
+            </>
+          )}
         </div>
         <div className="overlay-container">
           <div className="overlay">

@@ -1,6 +1,7 @@
+/* src/components/auth/auth.css */
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
-/* Fix for body and html to ensure proper height calculation */
+
 html, body {
   height: 100%;
   margin: 0;
@@ -8,7 +9,7 @@ html, body {
   font-family: "Montserrat", sans-serif;
 }
 
-/* Home container with proper positioning context */
+
 .home-container {
   position: relative;
   min-height: 100vh;
@@ -17,7 +18,7 @@ html, body {
   align-items: center;
 }
 
-/* Container for the entire authentication component - WIDER for PC */
+
 .auth-container {
   background-color: #fff;
   border-radius: 10px;
@@ -155,7 +156,7 @@ p {
   margin: 20px 0 30px;
 }
 
-/* Updated auth-form for better scrollable content */
+
 .auth-form {
   background-color: #ffffff;
   display: flex;
@@ -207,12 +208,12 @@ button.ghost {
   border-color: #ffffff;
 }
 
-/* Default state is hidden for desktop */
+
 .mobile-switch {
   display: none;
 }
 
-/* Remove bluish hover effect on buttons */
+
 button:hover, 
 button:focus {
   background-color: #ff3c1f !important;
@@ -225,12 +226,12 @@ button.ghost:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Remove default focus outline */
+
 button::-moz-focus-inner {
   border: 0;
 }
 
-/* Improved error message display */
+
 .error-message {
   width: 100%;
   padding: 12px;
@@ -242,7 +243,7 @@ button::-moz-focus-inner {
   text-align: center;
 }
 
-/* Improved selfie upload and preview styles */
+
 .selfie-container {
   width: 100%;
   margin: 10px 0;
@@ -283,7 +284,7 @@ button::-moz-focus-inner {
   border-radius: 20px !important;
 }
 
-/* Ensure form scrolls properly with image */
+
 .auth-form {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
@@ -302,12 +303,12 @@ button::-moz-focus-inner {
   border-radius: 6px;
 }
 
-/* Enhanced Mobile responsiveness - CORRECTED */
+
 @media (max-width: 768px) {
   .auth-container {
     min-height: 500px;
     width: 90%;
-    margin: 20px auto 80px auto; /* Added bottom margin for switch button */
+    margin: 20px auto 80px auto; 
   }
   
   .form-container {
@@ -343,21 +344,21 @@ button::-moz-focus-inner {
     z-index: 2;
   }
   
-  /* Hide overlay in mobile */
+  
   .overlay-container {
     display: none;
   }
   
   .mobile-switch {
-    display: block !important; /* Ensure it's shown */
-    position: relative; /* Fixed position at the bottom */
+    display: block !important; 
+    position: relative; 
     bottom: 20px;
     left: 0;
     right: 0;
-    width: 90%; /* Width of the button */
+    width: 90%; 
     max-width: 300px;
-    margin: 0 auto; /* Center horizontally */
-    z-index: 1000; /* Ensure it's above other content */
+    margin: 0 auto; 
+    z-index: 1000; 
   }
   
   .mobile-switch button {
@@ -373,14 +374,14 @@ button::-moz-focus-inner {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
   
-  /* Adjust form padding for mobile */
+  
   .auth-form {
     padding: 20px 25px;
     min-height: 260px;
   }
 }
 
-/* Smaller screens (phone portrait) */
+
 @media (max-width: 480px) {
   .auth-container {
     margin: 15px auto 80px auto;
@@ -406,7 +407,7 @@ button::-moz-focus-inner {
   }
 }
 
-/* Fix for iOS height calculation */
+
 @supports (-webkit-touch-callout: none) {
   .auth-container, 
   .sign-in-container, 
@@ -417,4 +418,18 @@ button::-moz-focus-inner {
   body, html {
     height: -webkit-fill-available;
   }
+}
+
+.auth-form button {
+  white-space: nowrap; /* Prevents text from wrapping */
+  padding-left: 25px;  /* Adjusts padding to make more room */
+  padding-right: 25px; /* Adjusts padding to make more room */
+}
+
+.form-title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  width: 100%;
 }

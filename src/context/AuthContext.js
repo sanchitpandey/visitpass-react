@@ -1,5 +1,7 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+// src/context/AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { auth } from "../firebase"; 
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import api from "../services/api";
 
 const AuthContext = createContext();
@@ -7,127 +9,105 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [visitor, setVisitor] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [confirmationResult, setConfirmationResult] = useState(null);
+
+  const cleanupRecaptcha = () => {
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.clear(); // This is the official Firebase method to destroy the widget
+      window.recaptchaVerifier = null;
+    }
+  };
+
+  // ✅ Initialize recaptcha for Firebase Phone Auth
+  const setupRecaptcha = (phoneNumber) => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: () => console.log("Recaptcha verified"),
+        }
+      );
+    }
+    return signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+  };
+
+  // ✅ Send OTP via Firebase
+  const sendOtp = async (phoneNumber) => {
+    try {
+      const result = await setupRecaptcha(phoneNumber);
+      setConfirmationResult(result);
+      return true;
+    } catch (err) {
+      console.error("Error sending OTP:", err);
+      throw err;
+    }
+  };
+
+  // ✅ Verify OTP via Firebase and sync with backend (Updated)
+  const verifyOtp = async (otp) => {
+    if (!confirmationResult) throw new Error("No OTP request in progress");
+
+    const result = await confirmationResult.confirm(otp);
+    const firebaseUser = result.user;
+    const idToken = await firebaseUser.getIdToken();
+
+    try {
+      const res = await api.post("/auth/firebase-login", { token: idToken });
+      login(res.data.token, res.data.user);
+      return firebaseUser;
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return firebaseUser; // Treat 404 as success for this step
+      }
+
+      // For any other error (like a 500), it's a real problem.
+      console.error("Error verifying OTP:", error);
+      throw error;
+    }
+  };
+
+  // ✅ Logout
+  const logout = async () => {
+    await auth.signOut();
+    localStorage.removeItem("authToken"); 
+    setUser(null);
+  };
+
+  // ✅ Manually logs in a user with a token and data from our backend
+  const login = (token, userData) => {
+    localStorage.setItem("authToken", token);
+    setUser(userData);
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-    const visitorData = localStorage.getItem("visitor");
-
-    if (token && user) {
-      setCurrentUser(JSON.parse(user));
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      if (visitorData) {
-        console.log(visitorData);
-        setVisitor(JSON.parse(visitorData));
+    const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        const idToken = await firebaseUser.getIdToken();
+        try {
+          const res = await api.post("/auth/firebase-login", { token: idToken });
+          setUser(res.data.user);
+        } catch (err) {
+          console.error("Error syncing Firebase user with backend:", err);
+          setUser(null);
+        }
+      } else {
+        setUser(null);
       }
-    }
+      setLoading(false);
+    });
 
-    setLoading(false);
+    return () => unsubscribe();
   }, []);
 
-  const login = async (email, password) => {
-    try {
-      setLoading(true);
-      const response = await api.post("/auth/login", { email, password });
-      const { token, user, visitor } = response.data;
-  
-      // Store token and user immediately
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      
-      // Set authorization header BEFORE making authenticated requests
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setCurrentUser(user);
-  
-      // Now fetch visitor details if needed
-      if (user.role === "visitor") {
-        try {
-          const visitorResponse = await api.get("/visitors/my-info");
-          localStorage.setItem(
-            "visitor",
-            JSON.stringify(visitorResponse.data.data)
-          );
-          setVisitor(visitorResponse.data.data);
-        } catch (visitorError) {
-          console.error("Error fetching visitor data:", visitorError);
-          // Still allow login even if visitor data fetch fails
-          if (visitor) {
-            localStorage.setItem("visitor", JSON.stringify(visitor));
-            setVisitor(visitor);
-          }
-        }
-      } else if (visitor) {
-        localStorage.setItem("visitor", JSON.stringify(visitor));
-        setVisitor(visitor);
-      }
-  
-      if (user.role === "admin") navigate("/admin");
-      else if (user.role === "security") navigate("/security");
-      else navigate("/visitor");
-  
-      return { success: true };
-    } catch (error) {
-      console.error("Login error:", error);
-      return {
-        success: false,
-        message: error.response?.data?.message || "Login failed",
-      };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // In the signup function, update the visitor data handling:
-  const signup = async (formData) => {
-    try {
-      setLoading(true);
-      const response = await api.post("/visitors/register", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      const { token, user, visitor } = response.data;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("visitor", JSON.stringify(visitor));
-
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setCurrentUser(user);
-      setVisitor(visitor);
-
-      navigate("/visitor");
-
-      return { success: true };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message || "Signup failed",
-      };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("visitor");
-    delete api.defaults.headers.common["Authorization"];
-    setCurrentUser(null);
-    setVisitor(null);
-    navigate("/");
-  };
-
-  const value = { currentUser, visitor, login, signup, logout, loading };
-
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider
+      value={{ user, loading, sendOtp, verifyOtp, logout, login, cleanupRecaptcha }}
+    >
+      {children}
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;

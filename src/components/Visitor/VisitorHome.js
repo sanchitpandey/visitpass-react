@@ -1,5 +1,4 @@
 // src/components/Visitor/VisitorHome.js
-// src/components/Visitor/VisitorHome.js
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
@@ -7,7 +6,7 @@ import { QRCodeSVG } from "qrcode.react";
 import "./VisitorHome.css";
 
 const VisitorHome = () => {
-  const { currentUser } = useAuth();
+  const { user } = useAuth();
   const [visitor, setVisitor] = useState(null);
   const [visitHistory, setVisitHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,23 +17,38 @@ const VisitorHome = () => {
 
   useEffect(() => {
     const fetchVisitorData = async () => {
+      console.log("CHECKPOINT 2: fetchVisitorData() function has been called.");
       try {
         const response = await api.get("/visitors/my-info");
-        console.log("Visitor data:", response.data.data);
-        setVisitor(response.data.data);
-        setVisitHistory(response.data.data.visitHistory || []);
+        console.log("CHECKPOINT 3: API call successful. Data:", response.data);
+        
+        // --- Small Bug Fix Here ---
+        // Your backend may send slightly different data structures
+        const visitorData = response.data.data || response.data;
+        setVisitor(visitorData);
+        setVisitHistory(visitorData.visitHistory || []);
+        // --- End of Bug Fix ---
+
       } catch (err) {
         setError("Failed to load visitor data");
-        console.error("Error fetching visitor data:", err);
+        console.error("CHECKPOINT 4: API call failed. Error:", err);
       } finally {
+        console.log("CHECKPOINT 5: finally block reached. Setting loading to false.");
         setLoading(false);
       }
     };
 
-    if (currentUser?.role === "visitor") {
+    console.log("CHECKPOINT 1: useEffect is running. Current user is:", user);
+
+    if (user?.role === "visitor") {
       fetchVisitorData();
+    } else {
+      // This is an important addition. If the user isn't a visitor,
+      // we were never setting loading to false, causing the infinite load.
+      console.log("User is not a visitor or does not exist. Aborting fetch.");
+      setLoading(false);
     }
-  }, [currentUser]);
+  }, [user]);
 
   if (loading) return <div className="loading">Loading...</div>;
 
@@ -54,7 +68,7 @@ const VisitorHome = () => {
 
   return (
     <div className="visitor-home">
-      <h2>Welcome, {currentUser?.name}</h2>
+      <h2>Welcome, {user?.name}</h2>
 
       {/* Desktop View - Row Layout */}
       <div className="visitor-card desktop-view">
