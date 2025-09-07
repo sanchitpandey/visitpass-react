@@ -45,15 +45,21 @@ const Signup = () => {
     setLoading(false);
   };
 
-  // ✅ Step 2: Verify OTP
+  // ✅ Step 2: Verify OTP (Corrected Version)
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const user = await verifyOtp(otp);
-      const token = await user.getIdToken();
+      const userObject = await verifyOtp(otp);
+
+      if (userObject.role) {
+        return;
+      }
+
+      const token = await userObject.getIdToken();
       setIdToken(token);
       setStep(3);
+
     } catch (err) {
       alert("Invalid OTP: " + err.message);
     }

@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }) => {
 
   const verifyOtp = async (otp) => {
     if (!confirmationResult) throw new Error("No OTP request in progress");
-
     const result = await confirmationResult.confirm(otp);
     const firebaseUser = result.user;
     const idToken = await firebaseUser.getIdToken();
@@ -58,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       return res.data.user;
     } catch (error) {
       if (error.response?.status === 404) {
-        return firebaseUser; 
+        return firebaseUser;
       }
       console.error("Error verifying OTP:", error);
       throw error;
