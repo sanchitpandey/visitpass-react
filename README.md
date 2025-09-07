@@ -1,60 +1,63 @@
-# VisitPass - Hospital Visitor Management System
+# Visitor Management System (VMS)
 
-VisitPass is a full-stack web application designed to streamline visitor management for hospitals and clinics. It provides role-based access for visitors, security personnel, and administrators.
+A full-stack Visitor Management System built for hospitals and clinics to manage visitor check-ins, access control, and reporting. Built with React (frontend), Node.js/Express (backend), MongoDB (database), and Firebase (OTP & Auth). Both frontend and backend are deployed on Vercel.
 
-## Features
+## Table of Contents
 
-- **Visitor Flow:** Phone number (OTP) based signup and login.
-- **Digital Pass:** Visitors get a unique QR code to use for entry and exit.
-- **Security Dashboard:** Staff can scan QR codes to log visitor entry/exit times.
-- **Admin Dashboard:** Admins can manage staff accounts and generate daily visitor reports.
-- **Role-Based Access Control:** Strict separation of permissions for Visitors, Security, and Admins.
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Setup and Installation](#-setup-and-installation)
+- [Deployment](#-deployment)
+- [Live Demo](#-live-demo)
+- [License](#-license)
 
-## Tech Stack
+## 🚀 Features
 
-### Frontend
-- **Framework:** React
-- **Routing:** React Router
-- **HTTP Client:** Axios
-- **Authentication:** Firebase Authentication (for phone OTP)
-- **QR Scanning:** @yudiel/react-qr-scanner
+### 🔐 Authentication & Security
+- Secure, token-based API authentication (JWT)
+- Firebase OTP for passwordless visitor signup and login
+- Role-Based Access Control (Admin, Security, Visitor)
 
-### Backend
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Database:** MongoDB with Mongoose
-- **Authentication:** JWT (for internal API) & Firebase Admin SDK (to verify client tokens)
-- **File Uploads:** Multer
+### 📋 Visitor Management
+- Register visitors with personal details, Aadhaar number, and a selfie
+- Generate a unique QR code for each visitor for contactless entry/exit
+- Security dashboard with a live QR code scanner to log visitor access
 
-## Project Setup
+### 📊 Admin Dashboard
+- Manage staff accounts (create new Admin or Security users)
+- Generate and download daily visitor reports in XLSX format
 
-### Prerequisites
-- Node.js (v18 or later recommended)
-- npm
-- MongoDB database instance (local or cloud like MongoDB Atlas)
-- A Firebase project with Phone Authentication enabled.
+### ⚙️ Secure Configuration
+- Configured CORS & CSP for secure cross-origin communication between the frontend and backend
 
-### Backend Setup
-1. Navigate to the backend directory.
-2. Create a `.env` file by copying `.env.example`.
-3. Fill in the required values:
-   - `PORT`: The port for the server (e.g., 5000).
-   - `MONGO_URI`: Your MongoDB connection string.
-   - `JWT_SECRET`: A long, random, secret string for signing tokens.
-   - `FIREBASE_SERVICE_ACCOUNT`: The JSON service account key from your Firebase project settings.
-4. Run `npm install` to install dependencies.
-5. Run `npm run dev` to start the development server.
+## 🛠️ Tech Stack
 
-### Frontend Setup
-1. Navigate to the frontend directory.
-2. Create a `.env` file by copying `.env.example`.
-3. Fill in the required values:
-   - `REACT_APP_API_URL`: The URL of your running backend (e.g., http://localhost:5000/api).
-4. Run `npm install` to install dependencies.
-5. Run `npm start` to start the React development server.
+**Frontend:** React, React Router, Axios, TailwindCSS  
+**Backend:** Node.js, Express.js  
+**Database:** MongoDB with Mongoose  
+**Authentication:** JWT (jsonwebtoken), Firebase Admin SDK  
+**File Uploads:** Multer  
+**Deployment:** Vercel (Serverless Functions + Static Hosting)
 
-## Deployment Notes
+## 📐 Architecture
 
-This application is configured for deployment on Vercel.
+```mermaid
+graph TD
+    A[React Frontend on Vercel] -->|HTTPS / REST API| B[Node.js/Express API on Vercel];
+    B -->|Mongoose| C[(MongoDB Database)];
+    A -->|Firebase SDK| D[Firebase Authentication];
+    B -->|Admin SDK| D;
+```
+## ⚡ Setup and Installation
 
-**Important:** The current implementation for visitor selfie uploads uses the local server filesystem (`/uploads` directory). This will **not** work correctly on serverless platforms like Vercel, which have an ephemeral filesystem. For a production deployment, this should be replaced with a dedicated cloud storage service like AWS S3, Vercel Blob, or Cloudinary.
+This project is structured as two separate repositories: one for the frontend and one for the backend.
+
+```bash
+# Clone both repositories
+git clone https://github.com/sanchitpandey/visitpass-react.git
+git clone https://github.com/sanchitpandey/visitpass-api.git
+```
+
+## Backend Setup
+
