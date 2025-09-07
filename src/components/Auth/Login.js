@@ -35,8 +35,9 @@ const Login = () => {
     setLoading(true);
     try {
       const loggedInUser = await verifyOtp(otp);
+      console.log(loggedInUser);
       if (loggedInUser) {
-        //navigate(`/${loggedInUser.role}`); 
+        navigate(`/${loggedInUser.role}`, { replace: true }); 
       }
     } catch (err) {
       alert("Invalid OTP or login failed: " + err.message);

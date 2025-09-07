@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const cleanupRecaptcha = () => {
     if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear(); // This is the official Firebase method to destroy the widget
+      window.recaptchaVerifier.clear();
       window.recaptchaVerifier = null;
     }
   };

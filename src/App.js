@@ -28,6 +28,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
       // and we are currently on the home/auth page...
       if (location.pathname === "/") {
         // ...then redirect to their correct dashboard.
+        console.log(user);
         navigate(`/${user.role}`);
       }
     }

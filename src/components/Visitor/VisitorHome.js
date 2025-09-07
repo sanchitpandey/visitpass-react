@@ -17,34 +17,24 @@ const VisitorHome = () => {
 
   useEffect(() => {
     const fetchVisitorData = async () => {
-      console.log("CHECKPOINT 2: fetchVisitorData() function has been called.");
       try {
         const response = await api.get("/visitors/my-info");
-        console.log("CHECKPOINT 3: API call successful. Data:", response.data);
         
-        // --- Small Bug Fix Here ---
-        // Your backend may send slightly different data structures
         const visitorData = response.data.data || response.data;
         setVisitor(visitorData);
         setVisitHistory(visitorData.visitHistory || []);
-        // --- End of Bug Fix ---
 
       } catch (err) {
         setError("Failed to load visitor data");
-        console.error("CHECKPOINT 4: API call failed. Error:", err);
       } finally {
-        console.log("CHECKPOINT 5: finally block reached. Setting loading to false.");
         setLoading(false);
       }
     };
 
-    console.log("CHECKPOINT 1: useEffect is running. Current user is:", user);
 
     if (user?.role === "visitor") {
       fetchVisitorData();
     } else {
-      // This is an important addition. If the user isn't a visitor,
-      // we were never setting loading to false, causing the infinite load.
       console.log("User is not a visitor or does not exist. Aborting fetch.");
       setLoading(false);
     }

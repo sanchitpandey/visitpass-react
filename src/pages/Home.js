@@ -1,19 +1,17 @@
 // src/pages/Home.js
-import React from "react";
 import AuthContainer from "../components/Auth/AuthContainer";
 import { useAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
 const Home = () => {
-  const { currentUser } = useAuth();
+  const { user } = useAuth();
 
-  // Redirect authenticated users based on their role
-  if (currentUser) {
-    if (currentUser.role === "visitor") {
+  if (user) {
+    if (user.role === "visitor") {
       return <Navigate to="/visitor" replace />;
-    } else if (currentUser.role === "security") {
+    } else if (user.role === "security") {
       return <Navigate to="/security" replace />;
-    } else if (currentUser.role === "admin") {
+    } else if (user.role === "admin") {
       return <Navigate to="/admin" replace />;
     }
   }

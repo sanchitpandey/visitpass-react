@@ -94,7 +94,7 @@ const Signup = () => {
       alert("Registration successful!");
 
       login(data.token, data.user);
-      //navigate(`/${data.user.role}`);
+      navigate(`/${data.user.role}`, { replace: true });
 
     } catch (err) {
       const message = err.response?.data?.message || "An unknown error occurred.";
