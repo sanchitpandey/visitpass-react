@@ -6,7 +6,7 @@ import AdminHome from "../components/Admin/AdminHome";
 import StaffForm from "../components/Admin/StaffForm";
 
 const AdminDashboard = () => {
-  const { currentUser, logout } = useAuth();
+  const { user, logout } = useAuth();
   const [showStaffForm, setShowStaffForm] = useState(false);
 
   const toggleStaffForm = () => {
@@ -16,8 +16,8 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard-container">
       <Header
-        userName={currentUser.name}
-        role={currentUser.role}
+        userName={user.name}
+        role={user.role}
         onLogout={logout}
       />
 

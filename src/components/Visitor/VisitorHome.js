@@ -11,9 +11,7 @@ const VisitorHome = () => {
   const [visitHistory, setVisitHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const apiBaseUrl = process.env.REACT_APP_API_URL 
-    ? process.env.REACT_APP_API_URL.replace('/api', '') 
-    : "http://localhost:5000";
+  const apiBaseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000/api").replace('/api', '');
 
   useEffect(() => {
     const fetchVisitorData = async () => {
@@ -44,7 +42,7 @@ const VisitorHome = () => {
 
   const getImageFilename = (path) => {
     if (!path) return '';
-    const parts = path.split(/[\/\\]/);
+    const parts = path.split(/[\\]/);
     return parts[parts.length - 1];
   };
 

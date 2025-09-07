@@ -1,5 +1,5 @@
 // src/context/AuthContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../firebase"; 
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import api from "../services/api";
@@ -10,7 +10,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Start as true
   const [confirmationResult, setConfirmationResult] = useState(null);
 
   const cleanupRecaptcha = () => {
@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Initialize recaptcha for Firebase Phone Auth
   const setupRecaptcha = (phoneNumber) => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
@@ -35,7 +34,6 @@ export const AuthProvider = ({ children }) => {
     return signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
   };
 
-  // ✅ Send OTP via Firebase
   const sendOtp = async (phoneNumber) => {
     try {
       const result = await setupRecaptcha(phoneNumber);
@@ -47,7 +45,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Verify OTP via Firebase and sync with backend (Updated)
   const verifyOtp = async (otp) => {
     if (!confirmationResult) throw new Error("No OTP request in progress");
 
@@ -58,50 +55,47 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await api.post("/auth/firebase-login", { token: idToken });
       login(res.data.token, res.data.user);
-      return firebaseUser;
+      return res.data.user;
     } catch (error) {
       if (error.response?.status === 404) {
-        return firebaseUser; // Treat 404 as success for this step
+        return firebaseUser; 
       }
-
-      // For any other error (like a 500), it's a real problem.
       console.error("Error verifying OTP:", error);
       throw error;
     }
   };
 
-  // ✅ Logout
   const logout = async () => {
     await auth.signOut();
-    localStorage.removeItem("authToken"); 
+    localStorage.removeItem("authToken");
     setUser(null);
   };
 
-  // ✅ Manually logs in a user with a token and data from our backend
+  // This function is now the single source of truth for setting a user session
   const login = (token, userData) => {
     localStorage.setItem("authToken", token);
     setUser(userData);
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-      if (firebaseUser) {
-        const idToken = await firebaseUser.getIdToken();
+    const validateTokenAndSetUser = async () => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
         try {
-          const res = await api.post("/auth/firebase-login", { token: idToken });
-          setUser(res.data.user);
+          const res = await api.get("/auth/me");
+          setUser(res.data.data); // The /me route returns user data under a 'data' key
         } catch (err) {
-          console.error("Error syncing Firebase user with backend:", err);
+          console.error("Session token is invalid or expired", err);
+          localStorage.removeItem("authToken");
           setUser(null);
         }
-      } else {
-        setUser(null);
       }
       setLoading(false);
-    });
-
-    return () => unsubscribe();
+    };
+    
+    validateTokenAndSetUser();
   }, []);
+
 
   return (
     <AuthContext.Provider
