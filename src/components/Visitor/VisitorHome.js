@@ -49,9 +49,7 @@ const VisitorHome = () => {
   const getImageUrl = (path) => {
     if (!path) return '';
     
-    const filename = getImageFilename(path);
-    
-    return `${apiBaseUrl}/uploads/${filename}`;
+    return getImageFilename(path);
   };  
 
   return (
